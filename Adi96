@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Adi text to qr</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  /* INPUT ROW */
+  .input-row {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 35px;
+  }
+
+  .glass-input {
+    width: 220px;
+    padding: 12px 14px;
+    font-size: 16px;
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    border: 2px solid transparent;
+    outline: none;
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 0 10px rgba(0,255,255,0.6),
+      inset 0 0 10px rgba(255,255,255,0.2);
+  }
+
+  .glass-input::placeholder {
+    color: #ddd;
+  }
+
+  /* QR ROW – ALWAYS ONE LINE */
+  .qr-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;        /* 🔥 FORCE ONE ROW */
+    gap: 100px;
+    justify-content: center;
+    overflow-x: auto;         /* mobile me scroll */
+    padding-bottom: 10px;
+  }
+
+  .qr-item {
+    text-align: center;
+    display: none;            /* hide until text */
+    flex: 0 0 auto;
+  }
+
+  /* WHITE BACKGROUND BIG */
+  .qr-box {
+    width: 165px;
+    height: 165px;
+    padding: 6x;
+    background: #ffffff;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 18px rgba(0,255,255,0.7);
+  }
+
+  /* DESKTOP EXTRA SPACE */
+  @media (min-width: 992px) {
+    .qr-box {
+      width: 210px;
+      height: 210px;
+      padding: 18px;
+    }
+  }
+
+  .qr-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #e0ffff;
+    max-width: 210px;
+    word-break: break-word;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>💫💫@ADI💫💫 💚TEXT TO QR💚</h2>
+
+<!-- INPUTS -->
+<div class="input-row">
+  <input type="text" id="text1" class="glass-input" placeholder="Text 1">
+  <input type="text" id="text2" class="glass-input" placeholder="Text 2">
+  <input type="text" id="text3" class="glass-input" placeholder="Text 3">
+</div>
+
+<!-- QR OUTPUT (ONE ROW) -->
+<div class="qr-row">
+
+  <div class="qr-item" id="item1">
+    <div id="qr1" class="qr-box"></div>
+    <div id="label1" class="qr-text"></div>
+  </div>
+
+  <div class="qr-item" id="item2">
+    <div id="qr2" class="qr-box"></div>
+    <div id="label2" class="qr-text"></div>
+  </div>
+
+  <div class="qr-item" id="item3">
+    <div id="qr3" class="qr-box"></div>
+    <div id="label3" class="qr-text"></div>
+  </div>
+
+</div>
+
+<script>
+  const qrSize = 150;
+
+  const qr1 = new QRCode(document.getElementById("qr1"), { width: qrSize, height: qrSize });
+  const qr2 = new QRCode(document.getElementById("qr2"), { width: qrSize, height: qrSize });
+  const qr3 = new QRCode(document.getElementById("qr3"), { width: qrSize, height: qrSize });
+
+  function setupQR(inputId, qrObj, labelId, itemId) {
+    const input = document.getElementById(inputId);
+    const label = document.getElementById(labelId);
+    const item = document.getElementById(itemId);
+
+    input.addEventListener("input", function () {
+      const val = this.value.trim();
+      qrObj.clear();
+
+      if (val) {
+        qrObj.makeCode(val);
+        label.textContent = val;
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+        label.textContent = "";
+      }
+    });
+  }
+
+  setupQR("text1", qr1, "label1", "item1");
+  setupQR("text2", qr2, "label2", "item2");
+  setupQR("text3", qr3, "label3", "item3");
+</script>
+
+</body>
+</html>
